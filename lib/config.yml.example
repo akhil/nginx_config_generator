@@ -1,71 +1,61 @@
+# These set various options for nginx. more to come.
+user: deploy deploy
+workers: 6
+
 # This defines the default roots and alternate roots.
 # The name (or key) of your site will be sprintf'd with
 # the below root, right.
 root: 
-  rails: /home/chris/sites/%s/current/public
-  default: /home/chris/sites/%s
+  rails: /var/apps/%s/current/public
+  default: /var/www/%s/current/web
 
 # All your vhosts.
 sites: 
-  # We're naming this vhost 'errtheblog'
-  errtheblog:
-    # Two upstream servers to proxy balance fairly.
-    upstream: 
-      - 127.0.0.1:8000
-      - 127.0.0.1:8001
-    fair: true
-    # Just a string of server names.
-    server_name: errtheblog.com www.errtheblog.com
-    # www.errtheblog.com => errtheblog.com
-    no_www: true 
-    # Just strings that get spit out as rewrites
-    rewrites:
-      - ^/feed/feedburner http://feeds.feedburner.com/errtheblog
-      - ^/feed/atom.xml http://feeds.feedburner.com/errtheblog
-    # Which root to use.  You can add a custom one here, too.
-    root: rails
-
-  cheat:
-    upstream: 127.0.0.1:8020
-    server_name: cheat.errtheblog.com
-
-  subtlety:
-    upstream: 127.0.0.1:8021
-    server_name: subtlety.errtheblog.com
-
-  sfruby:
-    upstream: 127.0.0.1:8030
-    server_name: sfruby.org www.sfruby.org
-    no_www: true
-    root: rails
-
-  trac:
-    upstream: 127.0.0.1:9000
-    server_name: require.errtheblog.com
-
-  qa:
-    server_name: qa.famupdate.com
-    auth_file: /home/builder/conf/htpasswd
-    root: /home/builder/site
-
-ssl_sites:
-  errtheblog:
-    # ssl configuration
-    ssl:
-      key: /path/to/err.key
-      cert: /path/to/err.crt	
-    # SSL only allows one vhost per IP this can be solved if you have multiple IPs.
-    listen: 10.10.10.1:443
-    # Two upstream servers to proxy balance.
+  placeholders:
+    host: example.com example.org another-example.com example.net yet-another-example.com
+  
+  static_site:
+    host: static.com static.net static.org
+    # other values:
+    #   'all': redirects all hosts after the first to the first host
+    #   'none': create no redirects for any hostname
+    #   'www': redirect any domain not starting with 'www' to www.domain.etc
+    #   any other value or no value: redirect 'www' hostnames to the non-'www' version
+    alias: all
+    prevent_hotlinking: images
+    301s:
+      '^/old_url.*': '/new_url'
+      '/old_categories/(.*)': '/$1'
+      '^/info/.*': 'info'
+      '^/info.html': 'info'
+  
+  rails_site:
+    host: proxy.com proxied.com
+    # two upstream servers to proxy to
+    # you can do single upstream servers with "upstream: 127.0.0.1:8000"
     upstream:
       - 127.0.0.1:8000
       - 127.0.0.1:8001
-    no_www: true
-    server_name: errtheblog.com
-    # Just strings that get spit out as rewrites
-    rewrites:
-      - ^/feed/feedburner http://feeds.feedburner.com/errtheblog
-      - ^/feed/atom.xml http://feeds.feedburner.com/errtheblog
-    # Which root to use.  You can add a custom one here, too.
+    alias: all
+    root: rails
+  
+  # other options:
+  #   auth_file: /path/to/an/htpasswd
+
+# You may also specify https hosts
+ssl_sites:
+  secure_rails_site:
+    # ssl configuration
+    ssl:
+      key: /path/to/ssl.key
+      cert: /path/to/ssl.crt	
+    # SSL only allows one vhost per IP this can be solved if you have multiple IPs.
+    listen: 10.10.10.1:443
+    # This proxies to our same upstream servers as the 'rails_site' entry above.
+    upstream:
+      - 127.0.0.1:8000
+      - 127.0.0.1:8001
+    alias: all
+    host: proxy.com
     root: rails
 
