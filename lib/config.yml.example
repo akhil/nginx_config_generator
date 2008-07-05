@@ -1,5 +1,10 @@
 # These set various options for nginx. more to come.
-user: deploy deploy
+user: deploy
+group: deploy
+
+pid_path: /var/run
+log_path: /var/log/nginx
+
 workers: 6
 
 # This defines the default roots and alternate roots.

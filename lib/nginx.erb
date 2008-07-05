@@ -1,7 +1,8 @@
-user <%= config['user'] || 'deploy deploy' %>;
-worker_processes  <%= config['workers'] %>;
+user <%= config['user'] || 'nginx' %> <%= config['group'] || 'nginx' %>;
 
-pid               /var/run/nginx.pid;
+worker_processes  <%= config['workers'] || 2 %>;
+
+pid               <%= config['pid_path'] || 'logs' %>/nginx.pid;
 
 
 events {
@@ -17,8 +18,8 @@ http {
                       '"$status" $body_bytes_sent "$http_referer" '
                       '"$http_user_agent" "$http_x_forwarded_for"';
   
-  access_log    /var/log/nginx/access.log  main;
-  error_log     /var/log/nginx/error.log   debug;
+  access_log    <%= config['log_path'] || '/var/log/nginx' %>/access.log  main;
+  error_log     <%= config['log_path'] || '/var/log/nginx' %>/error.log   debug;
   
   # no sendfile on OS X
   sendfile      on;
