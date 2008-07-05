@@ -186,7 +186,9 @@ http {
       <% end %>
     }
     
-    error_page   404    <%= site['404_not_found'] || '/404.html' %>;
+    <% if site['404_not_found'] %>
+    error_page   404    <%= site['404_not_found'] %>;
+    <% end %>
     
     error_page   500 502 503 504  <%= site['50x_error_page'] || '/50x.html' %>;
     location = /50x.html {
