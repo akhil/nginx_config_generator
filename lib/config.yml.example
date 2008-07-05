@@ -45,6 +45,11 @@ sites:
       - 127.0.0.1:8001
     alias: all
     root: rails
+    rewrites:
+      '^foo': bar
+    # redirects all except for feedburner to feeds.feedburner.com/value
+    feedburner:
+      '^/articles.atom': my_rails_site
   
   # other options:
   #   auth_file: /path/to/an/htpasswd

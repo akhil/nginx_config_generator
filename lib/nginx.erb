@@ -120,13 +120,19 @@ http {
     <% end %>
     
     location / {
-      <% Array(site['rewrite'] || site['rewrites']).each do |rewrite| %>
-      rewrite <%= rewrite %> break;
+      <% Array(site['rewrite'] || site['rewrites']).each do |rewrite, rule| %>
+      rewrite <%= rewrite %> <%= rule %> break;
       <% end %>
       
       # Redirects
       <% Array(site['redirect'] || site['redirects'] || site['301'] || site['301s']).each do |regex, destination| %>
       rewrite <%= regex %> /<%= destination %> permanent;
+      <% end %>
+      
+      <% Array(site['feedburner']).each do |feed, burner| %>
+        if ($http_user_agent !~ FeedBurner) {
+          rewrite <%= feed %> http://feeds.feedburner.com/<%= burner %> break;
+        }
       <% end %>
       
       <% if site['auth_file'] %>
