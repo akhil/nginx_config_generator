@@ -1,6 +1,6 @@
 Gem::Specification.new do |s|
   s.name = "nginx_config_generator"
-  s.version = "0.5"
+  s.version = "0.5.1"
   s.date = "2008-07-05"
   s.summary = "Creates Nginx config files from YAML options"
   s.email = "matt@flowerpowered.com"
@@ -9,4 +9,5 @@ Gem::Specification.new do |s|
   s.has_rdoc = false
   s.authors = ["Matthew Lyon", "Chris Wanstrath"]
   s.files = ["LICENSE", "Manifest", "Rakefile", "README", "bin/generate_nginx_config", "lib/config.yml.example", "lib/nginx.erb", "lib/nginx_config_generator.rb"]
+  s.executables << 'generate_nginx_config'
 end
