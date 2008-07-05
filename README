@@ -16,10 +16,9 @@ You can set two environment variables:
 By default, generate_nginx_config won't overwrite your OUT file.  To rock this behavior,
 pass in --overwrite or -o or -y or --force or -f.  Whichever.
 
-originally by:
+original by:
 >> Chris Wanstrath
 => chris[at]ozmm[dot]org
-
 
 new template and configuration options by:
 >> Matthew Lyon
