@@ -33,6 +33,8 @@ sites:
       '/old_categories/(.*)': '/$1'
       '^/info/.*': 'info'
       '^/info.html': 'info'
+    404_not_found: /404.html
+    50x_error_page: /50x.html
   
   rails_site:
     host: proxy.com proxied.com
