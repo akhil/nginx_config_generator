@@ -66,6 +66,7 @@ http {
     <% else %>
     # port to listen on. Can also be set to an IP:PORT
     listen       80;
+    <% end %>
     
     # sets the domain[s] that this vhost server requests for
     <%  unless site['www'] == 'no'
@@ -80,7 +81,6 @@ http {
         end
     %>
     server_name  <%= server_names.join(' ') %>;
-    <% end %>
     
     # doc root
     root <%= (config['root'][ site['root'] || 'default' ] || site['root']) % name %>;
