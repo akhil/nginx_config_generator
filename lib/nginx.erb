@@ -125,7 +125,7 @@ http {
       <% end %>
       
       # Redirects
-      <% Array(site['redirect'] || site['redirects'] || site['301'] || site['301s']).each do |regex, destination| %>
+      <% Array(site['redirect'] || site['redirects'] || site['301s']).each do |regex, destination| %>
       rewrite <%= regex %> /<%= destination %> permanent;
       <% end %>
       
